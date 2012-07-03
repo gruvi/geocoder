@@ -22,7 +22,7 @@ module Geocoder
       # "205.128.54.202") for geocoding, or coordinates (latitude, longitude)
       # for reverse geocoding. Returns an array of <tt>Geocoder::Result</tt>s.
       #
-      def search(query)
+      def search(query, bias=nil)
 
         # if coordinates given as string, turn into array
         query = query.split(/\s*,\s*/) if coordinates?(query)
@@ -33,7 +33,7 @@ module Geocoder
         else
           reverse = false
         end
-        results(query, reverse).map{ |r| 
+        results(query, reverse, bias).map{ |r| 
           result = result_class.new(r)
           result.cache_hit = @cache_hit if cache
           result

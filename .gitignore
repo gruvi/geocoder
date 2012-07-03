@@ -3,3 +3,6 @@ rdoc/*
 *.gem
 .bundle
 Gemfile.lock
+
+# vim files
+.*.sw?
