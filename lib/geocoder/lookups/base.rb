@@ -22,7 +22,7 @@ module Geocoder
       # "205.128.54.202") for geocoding, or coordinates (latitude, longitude)
       # for reverse geocoding. Returns an array of <tt>Geocoder::Result</tt>s.
       #
-      def search(query, bias=nil)
+      def search(query, bias = nil)
 
         # if coordinates given as string, turn into array
         query = query.split(/\s*,\s*/) if coordinates?(query)
@@ -76,7 +76,7 @@ module Geocoder
       ##
       # Geocoder::Result object or nil on timeout or other error.
       #
-      def results(query, reverse = false)
+      def results(query, reverse = false, bias = nil)
         fail
       end
 
@@ -109,8 +109,8 @@ module Geocoder
       ##
       # Returns a parsed search result (Ruby hash).
       #
-      def fetch_data(query, reverse = false)
-        parse_raw_data fetch_raw_data(query, reverse)
+      def fetch_data(query, reverse = false, bias = nil)
+        parse_raw_data fetch_raw_data(query, reverse, bias)
       rescue SocketError => err
         raise_error(err) or warn "Geocoding API connection cannot be established."
       rescue TimeoutError => err
@@ -142,9 +142,9 @@ module Geocoder
       ##
       # Fetches a raw search result (JSON string).
       #
-      def fetch_raw_data(query, reverse = false)
+      def fetch_raw_data(query, reverse = false, bias = nil)
         timeout(Geocoder::Configuration.timeout) do
-          url = query_url(query, reverse)
+          url = query_url(query, reverse, bias)
           uri = URI.parse(url)
           if cache and body = cache[url]
             @cache_hit = true
