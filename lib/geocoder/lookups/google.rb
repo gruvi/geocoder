@@ -10,8 +10,8 @@ module Geocoder::Lookup
 
     private # ---------------------------------------------------------------
 
-    def results(query, reverse = false)
-      return [] unless doc = fetch_data(query, reverse)
+    def results(query, reverse = false, bias = nil)
+      return [] unless doc = fetch_data(query, reverse, bias)
       case doc['status']; when "OK" # OK status implies >0 results
         return doc['results']
       when "OVER_QUERY_LIMIT"
